@@ -28,7 +28,7 @@ function LoginPage() {
 
     const userData = isSigningIn ? { name, email, password, profileImage } : { email, password };
 
-    fetch('http://localhost:8080/login', {
+    fetch('http://localhost:8080/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

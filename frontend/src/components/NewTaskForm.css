@@ -1,0 +1,43 @@
+.new-task-form {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .new-task-form input[type="text"],
+  .new-task-form select {
+    display: inline-block; /* Cambiado a inline-block para que estén en línea */
+    margin-right: 10px; /* Espacio entre los campos de texto y los selectores */
+  }
+  
+  .new-task-form input[type="date"],
+  .new-task-form select {
+    margin-bottom: 10px; /* Espacio debajo de los selectores */
+  }
+  
+  .new-task-form .form-buttons {
+    text-align: right; /* Alinea los botones a la derecha */
+    margin-top: 10px; /* Espacio arriba de los botones */
+  }
+  
+  .new-task-form button {
+    display: inline-block; /* Cambiado a inline-block para que estén en línea */
+    background-color: #bd4337; /* Color específico para el botón Add task */
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Tamaño del padding para hacer los botones del mismo tamaño */
+    margin-left: 10px; /* Espacio entre los botones */
+    cursor: pointer; /* Cursor en forma de mano al pasar sobre los botones */
+  }
+  
+  /* Estilo específico para el botón Add task */
+  .new-task-form button[type="submit"] {
+    background-color: #bd4337;
+  }
+  
+  /* Estilo específico para el botón Cancel */
+  .new-task-form button[type="button"] {
+    background-color: #555; /* Color diferente para el botón Cancel */
+  }
+  

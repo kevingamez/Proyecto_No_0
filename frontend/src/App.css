@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+/* App.css */
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: #b8b8b8;
+}
+

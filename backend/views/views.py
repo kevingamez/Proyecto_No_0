@@ -3,6 +3,8 @@ from flask_restful import Resource
 from ..models import *
 from flask import request
 from flask_jwt_extended import jwt_required, create_access_token
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 taskSchema = TaskSchema()
 categorySchema = CategorySchema()
@@ -80,7 +82,21 @@ class CategoryResource(Resource):
     
 class LoginResource(Resource):
     def post(self):
-        new_user = User(name=request.json['name'], email=request.json['email'], password=request.json['password'], profileImage=request.json['profileImage'])
+        # Buscar el usuario por email
+        user = User.query.filter_by(email=request.json['email']).first()
+        if user and check_password_hash(user.password, request.json['password']):
+            # Si el usuario existe y la contraseña es correcta, genera el token de acceso
+            access_token = create_access_token(identity=user.id)
+            return {'Message': "Login successful", "access_token": access_token, 'id': user.id}, 200
+        else:
+            # Si el usuario no existe o la contraseña es incorrecta, devuelve un mensaje de error
+            return {'Message': "Invalid email or password"}, 401
+    
+class RegisterResource(Resource):
+    def post(self):
+        hashed_password = generate_password_hash(request.json['password'])
+        new_user = User(name=request.json['name'], email=request.json['email'], password=hashed_password, profileImage=request.json['profileImage'])
+
         access_token = create_access_token(identity=new_user.id)
         db.session.add(new_user)
         db.session.commit()
