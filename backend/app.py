@@ -3,6 +3,7 @@ from .models import *
 from datetime import datetime, timedelta  
 from flask_restful import Api
 from .views import *
+from flask_jwt_extended import JWTManager
 
 app = create_app('default')
 app_context = app.app_context()
@@ -20,3 +21,7 @@ api.add_resource(CategoryResource, '/categories/<int:category_id>')
 
 api.add_resource(UserListResource, '/users')
 api.add_resource(UserResource, '/users/<int:user_id>')
+
+api.add_resource(LoginResource, '/login')
+
+jwt = JWTManager(app)
