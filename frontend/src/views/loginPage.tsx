@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 import './loginPage.css';
+import TaskList from './Tasks/TaskList';
+import { useNavigate } from 'react-router-dom';  // Importa useHistory
+
 
 function LoginPage() {
-  // Estado para alternar entre el formulario de inicio de sesión y el de registro
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const navigate = useNavigate();
 
-  // Estados para los valores de los campos del formulario
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const profileImage = '';
 
-  // Función para manejar el clic en el enlace "Sign in"
   const toggleForm = () => {
     setIsSigningIn(!isSigningIn);
   };
 
-  // Función para manejar el envío del formulario
-  const handleFormSubmit = () => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    // Validar la confirmación de la contraseña si es el formulario de registro
+  const url = isSigningIn ? 'http://localhost:8080/register' : 'http://localhost:8080/login';
+  const method = isSigningIn ? 'POST' : 'POST';
+
+
     if (isSigningIn && password !== confirmPassword) {
       alert("Passwords don't match.");
       return;
@@ -28,8 +32,8 @@ function LoginPage() {
 
     const userData = isSigningIn ? { name, email, password, profileImage } : { email, password };
 
-    fetch('http://localhost:8080/register', {
-      method: 'POST',
+    fetch(url, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -38,6 +42,7 @@ function LoginPage() {
     .then(response => response.json())
     .then(data => {
       console.log('Success:', data);
+      navigate('/tasklist');
     })
     .catch((error) => {
       console.error('Error:', error);
