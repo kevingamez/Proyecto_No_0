@@ -60,3 +60,15 @@ class TaskSchema(SQLAlchemyAutoSchema):
         model = Task
         include_relationships = True
         load_instance = True
+        
+class CategorySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Category
+        include_relationships = True
+        load_instance = True
+        
+class UserSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        include_relationships = True
+        load_instance = True
