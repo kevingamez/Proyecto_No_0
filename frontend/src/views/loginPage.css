@@ -1,0 +1,44 @@
+.login-container {
+    display: flex;        
+    flex-direction: column;
+    justify-content: flex-start; /* Cambia a flex-start para alinear el contenido al principio del contenedor */
+    align-items: center;   
+    width: 80%;           
+    max-width: 500px;       
+    padding: 0px;         
+    margin-top: auto; /* Usa un porcentaje del alto de la ventana gráfica para el margen superior */
+    margin-bottom: 200px; /* Esto empujará todo el contenido hacia arriba */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box; 
+  }
+  
+  
+  .login-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+    width: 100%; 
+  }
+  
+  .login-container input[type="email"],
+  .login-container .email-btn {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+  }
+  
+  .login-container .email-btn {
+    border: none;
+    background-color: #646cff;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 15px; 
+  }
+  
