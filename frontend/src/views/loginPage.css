@@ -1,13 +1,13 @@
 .login-container {
     display: flex;        
     flex-direction: column;
-    justify-content: flex-start; /* Cambia a flex-start para alinear el contenido al principio del contenedor */
+    justify-content: flex-start; 
     align-items: center;   
-    width: 80%;           
+    width: 90%;           
     max-width: 500px;       
     padding: 0px;         
-    margin-top: auto; /* Usa un porcentaje del alto de la ventana gráfica para el margen superior */
-    margin-bottom: 200px; /* Esto empujará todo el contenido hacia arriba */
+    margin-top: auto; 
+    margin-bottom: 200px; 
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box; 
@@ -24,6 +24,8 @@
   }
   
   .login-container input[type="email"],
+  .login-container input[type="text"],
+  .login-container input[type="password"],
   .login-container .email-btn {
     width: calc(100% - 20px);
     padding: 10px;
@@ -33,7 +35,7 @@
     box-sizing: border-box; 
   }
   
-  .login-container .email-btn {
+  .login-container .email-btn, .submit-btn{
     border: none;
     background-color: #646cff;
     color: white;
