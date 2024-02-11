@@ -14,3 +14,9 @@ db.create_all()
 api = Api(app)
 api.add_resource(TaskListResource, '/tasks')
 api.add_resource(TaskResource, '/tasks/<int:task_id>')
+
+api.add_resource(CategoryListResource, '/categories')
+api.add_resource(CategoryResource, '/categories/<int:category_id>')
+
+api.add_resource(UserListResource, '/users')
+api.add_resource(UserResource, '/users/<int:user_id>')
