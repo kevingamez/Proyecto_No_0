@@ -11,13 +11,13 @@ class StatusEnum(Enum):
     COMPLETED = 'Completed'
     
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    task_id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(128), nullable=False)
     creationDate = db.Column(db.DateTime, default=db.func.current_timestamp())
     deadline = db.Column(db.DateTime, default=False) 
     status = db.Column(db.Enum(StatusEnum))
-    user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    Category = db.Column(db.Integer, db.ForeignKey('category.id'))
+    user = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    Category = db.Column(db.Integer, db.ForeignKey('category.category_id'))
     __table_args__ = (db.UniqueConstraint('text', 'user', name='unique_task'),)
 
     def __repr__(self):
@@ -25,7 +25,7 @@ class Task(db.Model):
     
     
 class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(300), nullable=False) 
     taskList = db.relationship('Task',cascade='all, delete, delete-orphan')
@@ -36,7 +36,7 @@ class Category(db.Model):
     
     
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)

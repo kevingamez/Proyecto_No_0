@@ -1,30 +1,57 @@
-// components/TaskList.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TaskItem from './TaskItem';
 import NewTaskForm from '../../components/NewTaskForm';
 import './Task.css';
 
-const initialTasks = [
-  { id: 1, title: 'Responder emails Uniandes', dueDate: 'Today' },
-  { id: 2, title: 'Enviar Propuesta de Trabajo', dueDate: 'Thursday' },
-  // ... more tasks
-];
+interface Status {
+    key: string;
+    value: string;
+  }
+  
+  interface Category {
+    id: number;
+    name: string;
+    description: string;
+  }
+  
+  interface Task {
+    id: number;
+    text: string;
+    creationDate: string;
+    deadline: string;
+    status: Status;
+    category: Category;
+  }
+  
 
 const TaskList: React.FC = () => {
-    const [tasks, setTasks] = useState(initialTasks);
-    const [showNewTaskForm, setShowNewTaskForm] = useState(false); // Nuevo estado para el formulario
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [showNewTaskForm, setShowNewTaskForm] = useState(false);
     const [isEditing, setIsEditing] = useState<number | null>(null);
 
+    useEffect(() => {
+        fetch('http://localhost:8080/tasks')
+            .then(response => response.json())
+            .then(data => setTasks(data))
+            .catch(error => console.error('Error fetching tasks:', error));
+    }, []); 
+
     const handleAddTask = (title: string, dueDate: string) => {
-        // Lógica para añadir una nueva tarea
-        const newTaskId = Math.max(0, ...tasks.map(t => t.id)) + 1; // Crear un nuevo ID
-        const newTask = {
-            id: newTaskId,
-            title: title,
-            dueDate: dueDate,
-        };
-        setTasks([...tasks, newTask]);
-        setShowNewTaskForm(false); // Ocultar formulario después de agregar
+        const newTask = { title, dueDate };
+
+        fetch('http://localhost:8080/tasks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTask),
+        })
+        .then(response => response.json())
+        .then(addedTask => {
+            setTasks([...tasks, addedTask]); // Asume que el servidor responde con la tarea agregada, incluido su ID
+            setShowNewTaskForm(false);
+        })
+        .catch(error => console.error('Error adding task:', error));
     };
 
     const deleteTask = (taskId: number) => {
@@ -32,30 +59,35 @@ const TaskList: React.FC = () => {
     };
 
     const handleShowNewTaskForm = () => {
-        setShowNewTaskForm(true); // Mostrar el formulario
+        setShowNewTaskForm(true);
     };
 
     const handleCancelNewTask = () => {
-        setShowNewTaskForm(false); // Ocultar el formulario
+        setShowNewTaskForm(false);
     };
 
     const handleEdit = (id: number) => {
-        setIsEditing(id); // Establece el ID de la tarea a editar
-      };
-    
-      const taskToEdit = tasks.find(task => task.id === isEditing);
+        setIsEditing(id);
+    };
+
+    const taskToEdit = tasks.find(task => task.id === isEditing);
+
     return (
         <div className="task-list">
             {tasks.map(task => (
-                <TaskItem
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    dueDate={task.dueDate}
-                    onDelete={deleteTask}
-                    onEdit={handleEdit}
-                />
-            ))}
+  <TaskItem
+    key={task.id}
+    id={task.id}
+    text={task.text}
+    creationDate={task.creationDate}
+    deadline={task.deadline}
+    status={task.status} // Ahora es un objeto
+    category={task.category} // Ahora es un objeto
+    onDelete={deleteTask}
+    onEdit={handleEdit}
+  />
+))}
+
             {!showNewTaskForm && (
                 <button className="add-task-button" onClick={handleShowNewTaskForm}>
                     <span className="add-task-icon">+</span>

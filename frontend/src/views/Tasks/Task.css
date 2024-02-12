@@ -1,26 +1,41 @@
 /* App.css */
 .task-content {
   display: flex;
-  align-items: start; 
+  flex-direction: column;
   width: 800px; 
 }
 
-.task-details {
-  flex-grow: 1;
-  padding-left: 8px;
+.task-info {
+  display: flex;
+  justify-content: space-between; /* Alinea hijos a ambos extremos */
+  width: 100%; /* Asegura que el contenedor se extienda por todo el ancho disponible */
+}
+
+.task-status, .task-due-date-wrapper {
+  text-align: left;
+}
+.task-due-date-wrapper {
+  align-self: flex-end; /* Alinea la fecha de vencimiento al final del contenedor */
+  display: flex;
+  flex-direction: column; /* Organiza las fechas en columnas */
+  text-align: right;
+}
+.task-detail {
+  text-align: right; /* Asegura un espacio entre los detalles */
+}
+
+.task-due-date, .creation-date {
+  margin-right: auto; /* Asegura un espacio entre los detalles */
+}
+
+.creation-date {
+  margin-left: auto; /* Empuja el creationDate hacia la derecha */
 }
 
 .task-title {
   display: block; /* Make the title a block element so it takes up the full width */
   font-weight: bold;
   margin-bottom: 4px; /* Add space between the title and due date */
-  text-align: left;
-}
-
-.task-due-date {
-  display: block; /* Make the due date a block element */
-  color: #666;
-  font-size: 0.9em;
   text-align: left;
 }
 
@@ -31,6 +46,7 @@
 
 .task-item {
   display: flex;
+  align-items: start; /* Alinea los elementos al inicio verticalmente */
   padding: 10px 0;
   border-bottom: 1px solid #eee;
 }
@@ -96,4 +112,16 @@
 
 .form-buttons {
   text-align: right;
+}
+
+.status-not-started {
+  color: red;
+}
+
+.status-in-progress {
+  color: blue;
+}
+
+.status-completed {
+  color: green;
 }

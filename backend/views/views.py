@@ -5,6 +5,8 @@ from flask import request
 from flask_jwt_extended import jwt_required, create_access_token
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from datetime import datetime
+
 
 taskSchema = TaskSchema()
 categorySchema = CategorySchema()
@@ -15,7 +17,19 @@ class TaskListResource(Resource):
         return [taskSchema.dump(task) for task in Task.query.all()]
     
     def post(self):
-        new_task = Task(text=request.json['text'], creationDate=request.json['creationDate'], deadline=request.json['deadline'], status=request.json['status']['value'], user=request.json['user'], Category=request.json['Category'])
+        creation_date_str = request.json['creationDate']
+        deadline_str = request.json['deadline']
+  
+        creation_date = datetime.strptime(creation_date_str, "%Y-%m-%dT%H:%M:%S")
+        deadline = datetime.strptime(deadline_str, "%Y-%m-%dT%H:%M:%S")
+        new_task = Task(
+            text=request.json['text'],
+            creationDate=creation_date,
+            deadline=deadline,
+            status=request.json['status'],
+            user=request.json['user'],
+            Category=request.json['Category']
+        )
         db.session.add(new_task)
         db.session.commit()
         return taskSchema.dump(new_task), 201
@@ -85,11 +99,9 @@ class LoginResource(Resource):
         # Buscar el usuario por email
         user = User.query.filter_by(email=request.json['email']).first()
         if user and check_password_hash(user.password, request.json['password']):
-            # Si el usuario existe y la contraseña es correcta, genera el token de acceso
-            access_token = create_access_token(identity=user.id)
-            return {'Message': "Login successful", "access_token": access_token, 'id': user.id}, 200
+            access_token = create_access_token(identity=user.user_id)
+            return {'Message': "Login successful", "access_token": access_token, 'user_id': user.user_id}, 200
         else:
-            # Si el usuario no existe o la contraseña es incorrecta, devuelve un mensaje de error
             return {'Message': "Invalid email or password"}, 401
     
 class RegisterResource(Resource):
@@ -97,13 +109,13 @@ class RegisterResource(Resource):
         hashed_password = generate_password_hash(request.json['password'])
         new_user = User(name=request.json['name'], email=request.json['email'], password=hashed_password, profileImage=request.json['profileImage'])
 
-        access_token = create_access_token(identity=new_user.id)
+        access_token = create_access_token(identity=new_user.user_id)
         db.session.add(new_user)
         db.session.commit()
-        return {'Message': "User created successfully", "access_token":access_token, 'id':userSchema.dump(new_user)['id']}, 201
+        return {'Message': "User created successfully", "access_token":access_token, 'user_id':userSchema.dump(new_user)['user_id']}, 201
     
     def put(self):
-        user = User.query.get_or_404(request.json['id'])
+        user = User.query.get_or_404(request.json['user_id'])
         user.name = request.json.get('name', user.name)
         user.email = request.json.get('email', user.email)
         user.password = request.json.get('password', user.password)
