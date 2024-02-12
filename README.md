@@ -10,5 +10,7 @@ https://hub.docker.com/repository/docker/kevingamez/entrega_0/general
 
 ### Correr con docker
 `docker pull kevingamez/entrega_0`
+
+
 `docker run -p 8080:8080 -p 8081:8081 proyecto_0`
 
